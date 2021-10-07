@@ -9,7 +9,7 @@ public class LevelEditorFrame extends JFrame {
 		this.setSize(800, 600);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setJMenuBar(new LevelEditorMenuBar());
+		this.setJMenuBar(new LevelEditorMenuBar(this));
 		
 		this.setLayout(null);
 		

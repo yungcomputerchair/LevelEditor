@@ -1,16 +1,23 @@
 package us.gentasaur;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class LevelEditorMenuBar extends JMenuBar {
-	public LevelEditorMenuBar() {
+	
+	private JFrame parent;
+	
+	public LevelEditorMenuBar(JFrame frame) {
 		super();
+		parent = frame;
 		
 		JMenu file = new JMenu("File");
 		file.add(new JMenuItem(new FileNewAction()));
@@ -41,6 +48,12 @@ public class LevelEditorMenuBar extends JMenuBar {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			System.out.println("FILE->OPEN");
+			
+			JFileChooser fc = new JFileChooser();
+			if(fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
+				return;
+			File file = fc.getSelectedFile();
+			System.out.println(file.getAbsolutePath());
 		}
 	}
 }
