@@ -1,4 +1,4 @@
-package us.gentasaur;
+package us.gentasaur.leveleditor;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;

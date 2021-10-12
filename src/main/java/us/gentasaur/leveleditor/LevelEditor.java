@@ -1,4 +1,4 @@
-package us.gentasaur;
+package us.gentasaur.leveleditor;
 
 public class LevelEditor {
 

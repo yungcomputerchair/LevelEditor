@@ -1,4 +1,4 @@
-package us.gentasaur;
+package us.gentasaur.leveleditor;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
