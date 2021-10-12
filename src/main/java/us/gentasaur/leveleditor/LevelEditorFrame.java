@@ -7,11 +7,15 @@ import javax.swing.JFrame;
 public class LevelEditorFrame extends JFrame {
 	
 	private ArrayList<Byte[]> level;
-	private int levelX, levelY, levelW, levelH;
+	private int levelW, levelH;
+	private Tileset tileset;
 	
 	public LevelEditorFrame() {
 		super("LevelEditor");
 		level = null;
+		levelW = 0;
+		levelH = 0;
+		tileset = null;
 		
 		this.setSize(800, 600);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -23,9 +27,7 @@ public class LevelEditorFrame extends JFrame {
 		this.setVisible(true);
 	}
 	
-	public void initLevel(int x, int y, int w, int h) {
-		levelX = x;
-		levelY = y;
+	public void initLevel(int w, int h) {
 		levelW = w;
 		levelH = h;
 		
