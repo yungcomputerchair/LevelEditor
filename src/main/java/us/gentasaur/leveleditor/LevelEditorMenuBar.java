@@ -54,7 +54,7 @@ public class LevelEditorMenuBar extends JMenuBar {
 			if(fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
 				return;
 			File file = fc.getSelectedFile();
-			System.out.println(file.getAbsolutePath());
+			parent.loadLevel(file);
 		}
 	}
 	

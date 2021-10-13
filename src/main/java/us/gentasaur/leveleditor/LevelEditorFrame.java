@@ -1,6 +1,10 @@
 package us.gentasaur.leveleditor;
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -19,7 +23,6 @@ public class LevelEditorFrame extends JFrame {
 		levelW = 0;
 		levelH = 0;
 		tileset = null;
-		
 		this.setSize(800, 600);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -52,12 +55,40 @@ public class LevelEditorFrame extends JFrame {
 		return bytes;
 	}
 	
+	public void loadLevel(File file) {
+	    byte[] dat = new byte[(int) file.length()];
+	    DataInputStream dis;
+		try {
+			dis = new DataInputStream(new FileInputStream(file));
+			dis.readFully(dat);
+		    dis.close();
+		    
+		    initLevel(dat[0], dat[1]);
+		    level.clear();
+		    int layers = dat[2];
+		    
+		    for(int l = 0; l < layers; l++) {
+		    	Byte[] tiles = new Byte[levelW * levelH];
+		    	for(int y = 0; y < levelH; y++)
+		    		for(int x = 0; x < levelW; x++)
+		    			tiles[y * levelW + x] = dat[l * levelW * levelH + y * levelW + x];
+		    	level.add(tiles);
+		    }
+		    
+		    System.out.println("w: " + levelW + "; h: " + levelH + "; z: " + layers);
+		} catch (IOException e) {
+			// TODO add error dialog?
+			e.printStackTrace();
+		}
+	}
+	
 	public void loadTileset(String filename, int tileSize) {
 		try {
 			BufferedImage image = ImageIO.read(new File(filename));
 			tileset = new Tileset(image, tileSize);
 		} catch(Exception e) {
 			// TODO add error dialog?
+			e.printStackTrace();
 		}
 	}
 }
