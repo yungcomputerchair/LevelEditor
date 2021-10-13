@@ -1,6 +1,9 @@
 package us.gentasaur.leveleditor;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -49,7 +52,12 @@ public class LevelEditorFrame extends JFrame {
 		return bytes;
 	}
 	
-	public void loadTileset(String filename) {
-		
+	public void loadTileset(String filename, int tileSize) {
+		try {
+			BufferedImage image = ImageIO.read(new File(filename));
+			tileset = new Tileset(image, tileSize);
+		} catch(Exception e) {
+			// TODO add error dialog?
+		}
 	}
 }

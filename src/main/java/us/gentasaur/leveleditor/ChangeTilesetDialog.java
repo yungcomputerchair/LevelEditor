@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -103,7 +102,7 @@ public class ChangeTilesetDialog extends JDialog {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			lef.loadTileset(fileNameField.getText());
+			lef.loadTileset(fileNameField.getText(), Integer.parseInt(tileSizeField.getText()));
 			dialog.dispose();
 		}
 		
