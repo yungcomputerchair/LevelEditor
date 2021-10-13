@@ -23,9 +23,13 @@ public class LevelEditorMenuBar extends JMenuBar {
 		file.add(new JMenuItem(new FileNewAction()));
 		file.add(new JMenuItem(new FileOpenAction()));
 		
+		JMenu tools = new JMenu("Tools");
+		tools.add(new JMenuItem(new ToolsChangeTilesetAction()));
+		
 		JMenu help = new JMenu("Help");
 		
 		this.add(file);
+		this.add(tools);
 		this.add(help);
 	}
 	
@@ -42,18 +46,27 @@ public class LevelEditorMenuBar extends JMenuBar {
 	
 	private class FileOpenAction extends AbstractAction {
 		public FileOpenAction() {
-			super("Open...");
+			super("Open Level...");
 		}
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("FILE->OPEN");
-			
 			JFileChooser fc = new JFileChooser();
 			if(fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
 				return;
 			File file = fc.getSelectedFile();
 			System.out.println(file.getAbsolutePath());
+		}
+	}
+	
+	private class ToolsChangeTilesetAction extends AbstractAction {
+		public ToolsChangeTilesetAction() {
+			super("Change Tileset...");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			new ChangeTilesetDialog(parent);
 		}
 	}
 }
