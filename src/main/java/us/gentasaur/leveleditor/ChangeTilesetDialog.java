@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
@@ -22,6 +23,7 @@ public class ChangeTilesetDialog extends JDialog {
 	JDialog dialog = this;
 	LevelEditorFrame lef;
 	JTextField fileNameField;
+	JTextField tileSizeField;
 	
 	public ChangeTilesetDialog(LevelEditorFrame parent) {
 		super(parent, true);
@@ -41,12 +43,20 @@ public class ChangeTilesetDialog extends JDialog {
 		chooser.add(fileBrowseButton);
 		chooser.setAlignmentX(Container.CENTER_ALIGNMENT);
 		
+		JComponent sizeSetter = new JPanel();
+		JLabel sizeLabel = new JLabel("Tile sprite size: ");
+		tileSizeField = new JTextField("16", 3);
+		sizeSetter.add(sizeLabel);
+		sizeSetter.add(tileSizeField);
+		sizeSetter.setAlignmentX(Container.CENTER_ALIGNMENT);
+		
 		JComponent buttons = new JPanel();
 		buttons.add(new JButton(new ConfirmAction()));
 		buttons.add(new JButton(new CancelAction()));
 		buttons.setAlignmentX(Container.CENTER_ALIGNMENT);
 		
 		this.add(chooser);
+		this.add(sizeSetter);
 		this.add(buttons);
 		this.pack();
 		this.setVisible(true);
