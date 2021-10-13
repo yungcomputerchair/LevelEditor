@@ -49,7 +49,7 @@ public class LevelEditorFrame extends JFrame {
 		return bytes;
 	}
 	
-	public void changeTileset(Tileset ts) {
-		tileset = ts;
+	public void loadTileset(String filename) {
+		
 	}
 }

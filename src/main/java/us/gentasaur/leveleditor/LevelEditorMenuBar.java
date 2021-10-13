@@ -13,9 +13,9 @@ import javax.swing.JMenuItem;
 @SuppressWarnings("serial")
 public class LevelEditorMenuBar extends JMenuBar {
 	
-	private JFrame parent;
+	private LevelEditorFrame parent;
 	
-	public LevelEditorMenuBar(JFrame frame) {
+	public LevelEditorMenuBar(LevelEditorFrame frame) {
 		super();
 		parent = frame;
 		
