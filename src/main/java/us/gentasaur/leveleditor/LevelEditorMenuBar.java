@@ -39,7 +39,7 @@ public class LevelEditorMenuBar extends JMenuBar {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("FILE->NEW");
+			parent.initLevel(7, 6);
 		}
 	}
 	

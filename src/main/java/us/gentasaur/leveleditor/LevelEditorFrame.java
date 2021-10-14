@@ -67,6 +67,7 @@ public class LevelEditorFrame extends JFrame {
 	public void clearLevel() {
 		level.clear();
 		level.add(LevelEditorFrame.getEmptyFloor(levelW, levelH));
+		updateWindow();
 	}
 	
 	public static Byte[] getEmptyFloor(int w, int h) {
