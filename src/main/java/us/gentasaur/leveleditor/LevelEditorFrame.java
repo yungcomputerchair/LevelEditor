@@ -51,8 +51,9 @@ public class LevelEditorFrame extends JFrame {
 		//this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-		
 		this.updateWindow();
+		
+		new ChangeTilesetDialog(this);
 	}
 	
 	public void initLevel(int w, int h) {
