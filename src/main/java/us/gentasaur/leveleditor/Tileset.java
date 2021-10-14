@@ -1,5 +1,7 @@
 package us.gentasaur.leveleditor;
 
+import static us.gentasaur.leveleditor.Constants.*;
+
 import java.awt.image.BufferedImage;
 
 public class Tileset {
@@ -17,9 +19,21 @@ public class Tileset {
 	}
 	
 	public BufferedImage getTile(int n) {
-		int x = n % getSheetSize();
-		int y = n / getSheetSize();
+		int ss = getSheetSize();
+		if(n >= ss * ss)
+			return Tileset.getMissingTexImage(tileSize, image.getType(), NEON_PINK);
+		
+		int x = n % ss;
+		int y = n / ss;
 		return image.getSubimage(x * tileSize, y * tileSize, tileSize, tileSize);
+	}
+	
+	public static BufferedImage getMissingTexImage(int size, int type, int col) {
+		BufferedImage img = new BufferedImage(size, size, type);
+		for(int y = 0; y < size; y++)
+			for(int x = 0; x < size; x++)
+				img.setRGB(x, y, col);
+		return img;
 	}
 	
 	public static Tileset generateDefaultTileset(int col1, int col2) {

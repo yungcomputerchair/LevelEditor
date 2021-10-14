@@ -1,4 +1,7 @@
 package us.gentasaur.leveleditor;
+
+import static us.gentasaur.leveleditor.Constants.*;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,8 +20,6 @@ import javax.swing.JSlider;
 @SuppressWarnings("serial")
 public class LevelEditorFrame extends JFrame {
 	
-	private static final int SCALED_TILE_SIZE = 32;
-	
 	private ArrayList<Byte[]> level;
 	private int levelW, levelH;
 	private Tileset tileset;
@@ -31,7 +32,7 @@ public class LevelEditorFrame extends JFrame {
 		level = null;
 		levelW = 0;
 		levelH = 0;
-		tileset = Tileset.generateDefaultTileset(16711837, 0);
+		tileset = Tileset.generateDefaultTileset(Constants.NEON_PINK, 0);
 		
 		this.setSize(400, 300);
 		this.setResizable(false);
