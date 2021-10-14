@@ -44,7 +44,7 @@ public class ChangeTilesetDialog extends JDialog {
 		
 		JComponent sizeSetter = new JPanel();
 		JLabel sizeLabel = new JLabel("Tile sprite size: ");
-		tileSizeField = new JTextField("16", 3);
+		tileSizeField = new JTextField("8", 3);
 		sizeSetter.add(sizeLabel);
 		sizeSetter.add(tileSizeField);
 		sizeSetter.setAlignmentX(Container.CENTER_ALIGNMENT);
