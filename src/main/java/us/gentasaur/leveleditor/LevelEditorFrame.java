@@ -93,7 +93,7 @@ public class LevelEditorFrame extends JFrame {
 		    	Byte[] tiles = new Byte[levelW * levelH];
 		    	for(int y = 0; y < levelH; y++)
 		    		for(int x = 0; x < levelW; x++)
-		    			tiles[y * levelW + x] = dat[l * levelW * levelH + y * levelW + x];
+		    			tiles[y * levelW + x] = dat[3 + l * levelW * levelH + y * levelW + x];
 		    	level.add(tiles);
 		    }
 		    
