@@ -31,7 +31,7 @@ public class LevelEditorFrame extends JFrame {
 		level = null;
 		levelW = 0;
 		levelH = 0;
-		tileset = null;
+		tileset = Tileset.generateDefaultTileset(16711837, 0);
 		
 		this.setSize(400, 300);
 		this.setResizable(false);
