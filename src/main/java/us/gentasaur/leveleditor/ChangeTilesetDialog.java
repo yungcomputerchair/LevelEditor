@@ -27,6 +27,7 @@ public class ChangeTilesetDialog extends JDialog {
 	public ChangeTilesetDialog(LevelEditorFrame parent) {
 		super(parent, true);
 		lef = parent;
+		ConfirmAction confirmAction = new ConfirmAction();
 		
 		this.setTitle("Change Tileset");
 		this.setPreferredSize(new Dimension(400, 150));
@@ -36,7 +37,7 @@ public class ChangeTilesetDialog extends JDialog {
 		
 		JComponent chooser = new JPanel();
 		fileNameField = new JTextField("", 20);
-		JButton fileBrowseButton = new JButton(new BrowseAction());
+		JButton fileBrowseButton = new JButton(new BrowseAction(confirmAction));
 		fileNameField.setPreferredSize(fileBrowseButton.getPreferredSize());
 		chooser.add(fileNameField);
 		chooser.add(fileBrowseButton);
@@ -50,7 +51,7 @@ public class ChangeTilesetDialog extends JDialog {
 		sizeSetter.setAlignmentX(Container.CENTER_ALIGNMENT);
 		
 		JComponent buttons = new JPanel();
-		buttons.add(new JButton(new ConfirmAction()));
+		buttons.add(new JButton(confirmAction));
 		buttons.add(new JButton(new CancelAction()));
 		buttons.setAlignmentX(Container.CENTER_ALIGNMENT);
 		
@@ -63,8 +64,11 @@ public class ChangeTilesetDialog extends JDialog {
 	
 	private class BrowseAction extends AbstractAction {
 		
-		public BrowseAction() {
+		private ConfirmAction ca;
+		
+		public BrowseAction(ConfirmAction ca) {
 			super("Browse...");
+			this.ca = ca;
 		}
 		
 		@Override
@@ -75,6 +79,7 @@ public class ChangeTilesetDialog extends JDialog {
 				return;
 			File file = fc.getSelectedFile();
 			fileNameField.setText(file.getAbsolutePath());
+			ca.setEnabled(true);
 		}
 		
 		private class ImageFileFilter extends FileFilter {
@@ -98,6 +103,7 @@ public class ChangeTilesetDialog extends JDialog {
 		
 		public ConfirmAction() {
 			super("Apply");
+			this.setEnabled(false);
 		}
 		
 		@Override
