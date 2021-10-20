@@ -209,6 +209,8 @@ public class LevelEditorFrame extends JFrame {
 			
 			// draw cursor
 			gg.drawImage(tileset.getTile(selected), mouseX * SCALED_TILE_SIZE, mouseY * SCALED_TILE_SIZE, SCALED_TILE_SIZE, SCALED_TILE_SIZE, null);
+			gg.setColor(COLOR_NEON_CYAN);
+			gg.drawRect(mouseX * SCALED_TILE_SIZE, mouseY * SCALED_TILE_SIZE, SCALED_TILE_SIZE, SCALED_TILE_SIZE);
 		}
 
 		@Override
