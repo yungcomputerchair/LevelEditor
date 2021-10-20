@@ -5,6 +5,9 @@ import static us.gentasaur.leveleditor.Constants.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
 import java.io.File;
@@ -16,6 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class LevelEditorFrame extends JFrame {
@@ -27,15 +32,12 @@ public class LevelEditorFrame extends JFrame {
 	private LevelPanel levelPanel;
 	private JSlider floorSlider;
 	
-	private int selected;
-	
 	public LevelEditorFrame() {
 		super("LevelEditor");
 		level = null;
 		levelW = 0;
 		levelH = 0;
 		tileset = Tileset.generateDefaultTileset(Constants.NEON_PINK, 0);
-		selected = 0;
 		
 		this.setSize(400, 300);
 		this.setResizable(false);
@@ -49,6 +51,12 @@ public class LevelEditorFrame extends JFrame {
 		floorSlider.setMajorTickSpacing(1);
 		floorSlider.setPaintTicks(true);
 		floorSlider.setPaintLabels(true);
+		floorSlider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				levelPanel.repaint();
+			}
+		});
 		
 		this.add(levelPanel);
 		this.add(floorSlider);
@@ -133,11 +141,19 @@ public class LevelEditorFrame extends JFrame {
 		levelPanel.repaint();
 	}
 	
-	private class LevelPanel extends JPanel {
+	private class LevelPanel extends JPanel implements MouseListener, MouseMotionListener {
+		
+		private int selected;
+		private int mouseX, mouseY;
 		
 		public LevelPanel() {
 			super();
 			this.setBackground(Color.PINK);
+			selected = 0;
+			mouseX = -1;
+			mouseY = -1;
+			this.addMouseListener(this);
+			this.addMouseMotionListener(this);
 		}
 		
 		@Override
@@ -146,8 +162,9 @@ public class LevelEditorFrame extends JFrame {
 			super.paintComponent(g);
 			if(level == null || tileset == null)
 				return;
-			
 			Graphics2D gg = (Graphics2D)g;
+			
+			// draw level
 			int floor = floorSlider.getValue();
 			for(int y = 0; y < levelH; y++) {
 				for(int x = 0; x < levelW; x++) {
@@ -155,6 +172,54 @@ public class LevelEditorFrame extends JFrame {
 					gg.drawImage(tileset.getTile(tile), x * SCALED_TILE_SIZE, y * SCALED_TILE_SIZE, SCALED_TILE_SIZE, SCALED_TILE_SIZE, null);
 				}
 			}
+			
+			// draw cursor
+			gg.drawImage(tileset.getTile(selected), mouseX * SCALED_TILE_SIZE, mouseY * SCALED_TILE_SIZE, SCALED_TILE_SIZE, SCALED_TILE_SIZE, null);
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			mouseX = -1;
+			mouseY = -1;
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			this.placeTile();
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			updateCursorCoords(e.getX(), e.getY());
+			placeTile();
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			updateCursorCoords(e.getX(), e.getY());
+			this.repaint(); // for cursor drawing
+		}
+		
+		private void updateCursorCoords(int mx, int my) {
+			mouseX = mx / SCALED_TILE_SIZE;
+			mouseY = my / SCALED_TILE_SIZE;
+		}
+		
+		private void placeTile() {
+			if(mouseX < 0 || mouseY < 0 || mouseX >= levelW || mouseY >= levelW)
+				return; // out of bounds
+			
+			level.get(floorSlider.getValue())[mouseY * levelW + mouseX] = selected;
+			this.repaint();
 		}
 	}
 }
