@@ -172,6 +172,10 @@ public class LevelEditorFrame extends JFrame {
 		levelPanel.repaint();
 	}
 	
+	public boolean isLoaded() {
+		return level != null;
+	}
+	
 	private class LevelPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 		
 		private int selected;

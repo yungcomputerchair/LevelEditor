@@ -42,8 +42,9 @@ public class LevelEditorMenuBar extends JMenuBar {
 		
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			parent.initLevel(7, 6);
-			saveButton.setEnabled(true);
+			new NewLevelDialog(parent);
+			if(parent.isLoaded())
+				saveButton.setEnabled(true);
 		}
 	}
 	
