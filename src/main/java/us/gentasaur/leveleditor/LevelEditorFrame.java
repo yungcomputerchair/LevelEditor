@@ -5,6 +5,8 @@ import static us.gentasaur.leveleditor.Constants.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -55,6 +57,7 @@ public class LevelEditorFrame extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				levelPanel.repaint();
+				levelPanel.grabFocus();
 			}
 		});
 		
@@ -141,7 +144,7 @@ public class LevelEditorFrame extends JFrame {
 		levelPanel.repaint();
 	}
 	
-	private class LevelPanel extends JPanel implements MouseListener, MouseMotionListener {
+	private class LevelPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
 		
 		private int selected;
 		private int mouseX, mouseY;
@@ -154,6 +157,9 @@ public class LevelEditorFrame extends JFrame {
 			mouseY = -1;
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
+			this.addKeyListener(this);
+			this.setFocusable(true);
+			this.grabFocus();
 		}
 		
 		@Override
@@ -221,5 +227,42 @@ public class LevelEditorFrame extends JFrame {
 			level.get(floorSlider.getValue())[mouseY * levelW + mouseX] = selected;
 			this.repaint();
 		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			switch(e.getKeyCode())
+			{
+			case KEY_LEFT_BRACE: // delete last floor
+				if(level != null && floorSlider.getMaximum() > 0) {
+					level.remove(level.size() - 1);
+					floorSlider.setMaximum(floorSlider.getMaximum() - 1);
+				}
+				break;
+			case KEY_RIGHT_BRACE:
+				if(level != null) {
+					level.add(LevelEditorFrame.getEmptyFloor(levelW, levelH));
+					floorSlider.setMaximum(floorSlider.getMaximum() + 1);
+				}
+				break;
+			case KEY_LEFT_ARROW:
+				selected--;
+				if(selected < 0) selected = 0;
+				this.repaint();
+				break;
+			case KEY_RIGHT_ARROW:
+				selected++;
+				if(selected >= tileset.getTotalTiles()) selected = tileset.getTotalTiles() - 1;
+				this.repaint();
+				break;
+			default:
+				break;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {}
+
+		@Override
+		public void keyTyped(KeyEvent e) {}
 	}
 }

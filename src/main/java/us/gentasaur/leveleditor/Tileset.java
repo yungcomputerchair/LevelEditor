@@ -18,6 +18,11 @@ public class Tileset {
 		return image.getWidth() / tileSize;
 	}
 	
+	public int getTotalTiles() {
+		int ss = getSheetSize();
+		return ss * ss;
+	}
+	
 	public BufferedImage getTile(int n) {
 		int ss = getSheetSize();
 		if(n >= ss * ss)
