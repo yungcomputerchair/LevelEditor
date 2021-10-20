@@ -32,7 +32,7 @@ public class LevelEditorMenuBar extends JMenuBar {
 		
 		this.add(file);
 		this.add(tools);
-		this.add(help);
+		//this.add(help);
 	}
 	
 	private class FileNewAction extends AbstractAction {
