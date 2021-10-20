@@ -20,12 +20,14 @@ import javax.swing.JSlider;
 @SuppressWarnings("serial")
 public class LevelEditorFrame extends JFrame {
 	
-	private ArrayList<Byte[]> level;
+	private ArrayList<Integer[]> level;
 	private int levelW, levelH;
 	private Tileset tileset;
 	
 	private LevelPanel levelPanel;
 	private JSlider floorSlider;
+	
+	private int selected;
 	
 	public LevelEditorFrame() {
 		super("LevelEditor");
@@ -33,6 +35,7 @@ public class LevelEditorFrame extends JFrame {
 		levelW = 0;
 		levelH = 0;
 		tileset = Tileset.generateDefaultTileset(Constants.NEON_PINK, 0);
+		selected = 0;
 		
 		this.setSize(400, 300);
 		this.setResizable(false);
@@ -61,7 +64,7 @@ public class LevelEditorFrame extends JFrame {
 		levelW = w;
 		levelH = h;
 		
-		level = new ArrayList<Byte[]>();
+		level = new ArrayList<Integer[]>();
 		clearLevel();
 	}
 	
@@ -71,13 +74,13 @@ public class LevelEditorFrame extends JFrame {
 		updateWindow();
 	}
 	
-	public static Byte[] getEmptyFloor(int w, int h) {
-		Byte[] bytes = new Byte[w * h];
-		byte empty = (byte) 0x00;
+	public static Integer[] getEmptyFloor(int w, int h) {
+		Integer[] tiles = new Integer[w * h];
+		int empty = 0;
 		for(int i = 0; i < w * h; i++) {
-			bytes[i] = empty;
+			tiles[i] = empty;
 		}
-		return bytes;
+		return tiles;
 	}
 	
 	public void loadLevel(File file) {
@@ -88,15 +91,15 @@ public class LevelEditorFrame extends JFrame {
 			dis.readFully(dat);
 		    dis.close();
 		    
-		    initLevel(dat[0], dat[1]);
+		    initLevel((int)(dat[0]) & 0xff, (int)(dat[1]) & 0xff);
 		    level.clear();
-		    int layers = dat[2];
+		    int layers = (int)(dat[2]) & 0xff;
 		    
 		    for(int l = 0; l < layers; l++) {
-		    	Byte[] tiles = new Byte[levelW * levelH];
+		    	Integer[] tiles = new Integer[levelW * levelH];
 		    	for(int y = 0; y < levelH; y++)
 		    		for(int x = 0; x < levelW; x++)
-		    			tiles[y * levelW + x] = dat[3 + l * levelW * levelH + y * levelW + x];
+		    			tiles[y * levelW + x] = (int)(dat[3 + l * levelW * levelH + y * levelW + x]) & 0xff;
 		    	level.add(tiles);
 		    }
 		    
@@ -148,7 +151,7 @@ public class LevelEditorFrame extends JFrame {
 			int floor = floorSlider.getValue();
 			for(int y = 0; y < levelH; y++) {
 				for(int x = 0; x < levelW; x++) {
-					byte tile = level.get(floor)[y * levelW + x];
+					int tile = level.get(floor)[y * levelW + x];
 					gg.drawImage(tileset.getTile(tile), x * SCALED_TILE_SIZE, y * SCALED_TILE_SIZE, SCALED_TILE_SIZE, SCALED_TILE_SIZE, null);
 				}
 			}
