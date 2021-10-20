@@ -13,14 +13,17 @@ import javax.swing.JMenuItem;
 public class LevelEditorMenuBar extends JMenuBar {
 	
 	private LevelEditorFrame parent;
+	private FileSaveAction saveButton;
 	
 	public LevelEditorMenuBar(LevelEditorFrame frame) {
 		super();
 		parent = frame;
+		saveButton = new FileSaveAction();
 		
 		JMenu file = new JMenu("File");
 		file.add(new JMenuItem(new FileNewAction()));
 		file.add(new JMenuItem(new FileOpenAction()));
+		file.add(new JMenuItem(saveButton));
 		
 		JMenu tools = new JMenu("Tools");
 		tools.add(new JMenuItem(new ToolsChangeTilesetAction()));
@@ -40,6 +43,7 @@ public class LevelEditorMenuBar extends JMenuBar {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			parent.initLevel(7, 6);
+			saveButton.setEnabled(true);
 		}
 	}
 	
@@ -54,7 +58,24 @@ public class LevelEditorMenuBar extends JMenuBar {
 			if(fc.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION)
 				return;
 			File file = fc.getSelectedFile();
-			parent.loadLevel(file);
+			if (parent.loadLevel(file) == 0)
+				saveButton.setEnabled(true);
+		}
+	}
+	
+	private class FileSaveAction extends AbstractAction {
+		public FileSaveAction() {
+			super("Save Level...");
+			this.setEnabled(false);
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			JFileChooser fc = new JFileChooser();
+			if(fc.showSaveDialog(parent) != JFileChooser.APPROVE_OPTION)
+				return;
+			File file = fc.getSelectedFile();
+			parent.saveLevel(file);
 		}
 	}
 	

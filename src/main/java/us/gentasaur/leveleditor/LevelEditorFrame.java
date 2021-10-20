@@ -12,8 +12,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -94,7 +96,7 @@ public class LevelEditorFrame extends JFrame {
 		return tiles;
 	}
 	
-	public void loadLevel(File file) {
+	public int loadLevel(File file) {
 	    byte[] dat = new byte[(int) file.length()];
 	    DataInputStream dis;
 		try {
@@ -115,6 +117,32 @@ public class LevelEditorFrame extends JFrame {
 		    }
 		    
 		    updateWindow();
+		    return 0;
+		} catch (IOException e) {
+			// TODO add error dialog?
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	
+	public void saveLevel(File file) {
+		DataOutputStream dos;
+		try {
+			dos = new DataOutputStream(new FileOutputStream(file));
+			int layers = level.size();
+			
+			// header
+			dos.write(levelW);
+			dos.write(levelH);
+			dos.write(layers);
+			
+			// body
+			for(int l = 0; l < layers; l++)
+				for(int y = 0; y < levelH; y++)
+					for(int x = 0; x < levelW; x++)
+						dos.write(level.get(l)[y * levelW + x]);
+			
+			dos.close();
 		} catch (IOException e) {
 			// TODO add error dialog?
 			e.printStackTrace();
